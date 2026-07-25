@@ -4,51 +4,68 @@ class Pilha:
     def __init__(self, capacidade):
         self.__capacidade = capacidade
         self.__topo = -1
-        self.__pilha = np.empty(capacidade, dtype=str)
+        self.__pilha = np.empty(capacidade, dtype="U1")
 
-    def __pilha_cheia(self):
-        if self.__topo == self.__capacidade - 1:
-            return True
-        else:
-            return False
+    def pilha_cheia(self):
+        return self.__topo == self.__capacidade - 1
 
-    def __pilha_vazia(self):
-        if self.__topo == -1:
-            return True
-        else:
-            return False
+    def pilha_vazia(self):
+        return self.__topo == -1
 
     def empilhar(self, valor):
-        if self.__pilha_cheia():
-            return print("Pilha cheia")
+        if self.pilha_cheia():
+            print("Pilha cheia")
         else:
             self.__topo += 1
             self.__pilha[self.__topo] = valor
 
     def desempilhar(self):
-        if self.__pilha_vazia():
-            return print("Pilha vazia")
+        if self.pilha_vazia():
+            print("Pilha vazia")
+            return None
         else:
+            valor = self.__pilha[self.__topo]
             self.__topo -= 1
+            return valor
 
     def ver_topo(self):
-        if self.__pilha_vazia():
-            return print("Pilha vazia")
+        if self.pilha_vazia():
+            return None
         else:
-            return print(self.__pilha[self.__topo])
-
-
+            return self.__pilha[self.__topo]
 
 
 def validar_expressao(expressao):
-    tamanho_expressao = int(len(expressao) - 1)
-    pilhaExpressao = Pilha(tamanho_expressao)
-    for letra in expressao:
-        if letra in "([{}])":
-          pilhaExpressao.empilhar(letra)
+    pilha = Pilha(len(expressao))
 
-    for i in range(tamanho_expressao + 1):
+    pares = {"}": "{", "]": "[", ")": "("}
+
+    for caractere in expressao:
+
+        if caractere in "{[(":
+            pilha.empilhar(caractere)
+
+        elif caractere in "}])":
+            if pilha.pilha_vazia():
+                return False
+
+            topo = pilha.desempilhar()
+            if topo != pares[caractere]:
+                return False
+
+    return pilha.pilha_vazia()
 
 
-validar_expressao("{ qualquer } coisa")
 
+
+exp1 = "c[d]"
+exp2 = "a{b[c]d}e"
+exp3 = "a{b(c]d}e"
+exp4 = "a[b{c}d]e}"
+exp5 = "a{b(c)"
+
+print("exp1:", validar_expressao(exp1))
+print("exp2:", validar_expressao(exp2))
+print("exp3:", validar_expressao(exp3))
+print("exp4:", validar_expressao(exp4))
+print("exp5:", validar_expressao(exp5))
