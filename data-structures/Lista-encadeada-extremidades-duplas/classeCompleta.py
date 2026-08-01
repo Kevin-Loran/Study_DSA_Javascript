@@ -26,12 +26,12 @@ class ListaEncadeadaExtremidadeDupla:
         if self.__lista_vazia():
             self.primeiro = novo
         else:
-            self.ultimo.ultimo = novo
+            self.ultimo.proximo = novo
         self.ultimo = novo
 
     def excluir_inicio(self):
         if self.__lista_vazia():
-            print("lista vazia.")
+            print("A lista está vazia")
             return
 
         temp = self.primeiro
@@ -42,7 +42,7 @@ class ListaEncadeadaExtremidadeDupla:
 
     def mostrar(self):
         if self.__lista_vazia():
-            print("lista vazia.")
+            print("A lista está vazia")
             return
         atual = self.primeiro
         while atual != None:
@@ -56,4 +56,3 @@ lista.insere_inicio(2)
 lista.insere_inicio(3)
 lista.insere_inicio(4)
 lista.excluir_inicio()
-lista.mostrar()
